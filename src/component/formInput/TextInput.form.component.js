@@ -1,4 +1,5 @@
 import React from 'react';
+import {FormFields} from '../EditTodo.component'
 
 export default (props) => {
     return (
@@ -7,7 +8,7 @@ export default (props) => {
             <input type="text"
                 className="form-control"
                 value={props.Value}
-                onChange={props.OnChange}
+                onChange={e => props.OnChange(e, props.fieldName)}
             />
         </div>
     );

@@ -6,7 +6,7 @@ export default (props) => {
     return (
         <div className="form-group">
             {
-                props.Options.map((x) => <RadioButton key={x.Id} Id={x.Id} OnChange={props.OnChange} Value={x.Value} Checked={x.Value === props.CurrentOption} />)
+                props.Options.map((x) => <RadioButton key={x.Id} Id={x.Id} OnChange={e => props.OnChange(e, props.fieldName)} Value={x.Value} Checked={x.Value === props.CurrentOption} />)
             }
         </div>
     );

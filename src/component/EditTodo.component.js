@@ -6,21 +6,27 @@ import Submit from './formInput/Submit.form.component';
 import TextInput from './formInput/TextInput.form.component';
 import RadioButtonMenu from './formInput/RadioButtonMenu.form.component';
 
+export const FormFields = {
+    description : 'todo_description',
+    responsible : 'todo_responsible',
+    priority : 'todo_priority',
+    completed : 'todo_completed'
+};
+
 class EditTodo extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {
             _id: '',
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
+            [FormFields.description]: '',
+            [FormFields.responsible]: '',
+            [FormFields.priority]: '',
+            [FormFields.completed]: false
         }
 
         this.onChangeCompleted = this.onChangeCompleted.bind(this);
-        this.onChangeTodoDescription = this.onChangeTodoDescription.bind(this);
-        this.onChangeTodoResponsible = this.onChangeTodoResponsible.bind(this);
-        this.onChangeTodoPriority = this.onChangeTodoPriority.bind(this);
+        this.onFormModify = this.onFormModify.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
     }
@@ -39,24 +45,10 @@ class EditTodo extends React.Component {
         );
     }
 
-    onChangeTodoDescription(e) {
-        var newDesc = e.target.value;
+    onFormModify(e, field) {
+        var newVal = e.target.value;
         this.setState({
-            todo_description: newDesc
-        });
-    }
-
-    onChangeTodoResponsible(e) {
-        var newResponsible = e.target.value;
-        this.setState({
-            todo_responsible: newResponsible
-        });
-    }
-
-    onChangeTodoPriority(e) {
-        var newPrioirity = e.target.value;
-        this.setState({
-            todo_priority: newPrioirity
+            [field]: newVal
         });
     }
 
@@ -101,9 +93,9 @@ class EditTodo extends React.Component {
             <form className="form-group" onSubmit={this.onSubmit}>
                 <p>EditTodo for {this.props.match.params.id}</p>
                 <div>
-                    <TextInput Label="Description: " Value={this.state.todo_description} OnChange={this.onChangeTodoDescription} />
-                    <TextInput Label="Responsible: " Value={this.state.todo_responsible} OnChange={this.onChangeTodoResponsible} />
-                    <RadioButtonMenu Options={this.priorityOptions} CurrentOption={this.state.todo_priority} OnChange={this.onChangeTodoPriority} />
+                    <TextInput Label="Description: " Value={this.state.todo_description} OnChange={this.onFormModify} fieldName={FormFields["description"]}/>
+                    <TextInput Label="Responsible: " Value={this.state.todo_responsible} OnChange={this.onFormModify} fieldName={FormFields["responsible"]}/>
+                    <RadioButtonMenu Options={this.priorityOptions} CurrentOption={this.state.todo_priority} OnChange={this.onFormModify} fieldName={FormFields["priority"]}/>
                 </div>
                 <Submit Value="Save Todo" />
             </form>
