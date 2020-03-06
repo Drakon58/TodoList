@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Todo } from '../util/Todo';
 
 export default class TodoList extends React.Component {
     constructor(props) {
@@ -7,6 +8,8 @@ export default class TodoList extends React.Component {
         this.state = {
             todos: []
         };
+
+        this.removeTodo = this.removeTodo.bind(this);
     }
 
     async componentDidMount() {
@@ -17,44 +20,57 @@ export default class TodoList extends React.Component {
         console.log(todoList)
     }
 
+    removeTodo(e, id) {
+        Todo.RemoveTodo(id);
+        let todoArray = this.state.todos.filter(x => x._id != id);
+        this.setState({
+            todos: todoArray
+        });
+    }
+
     render() {
         return (
             <div className="container">
                 <p>TodoList Display</p>
                 {
                     this.state.todos ?
-                        this.state.todos.map((todoItem, index) => {
-                            return <React.Fragment key={index}>
+                        this.state.todos.map((todoItem) => {
+                            return <React.Fragment key={todoItem._id}>
                                 <table className="table table-striped table-dark">
                                     <thead>
-                                        <tr>
-                                            <th colspace="2" className="text-left">{todoItem.todo_description}
-                                                <br />
+                                        <tr className="d-flex">
+                                            <th className="col-2 text-left text-wrap text-break text-decoration-none">
                                                 <Link to={{
                                                     pathname: `/edit/${todoItem._id}`,
                                                     state: {
                                                         todo: todoItem
                                                     }
                                                 }}
-                                                >Edit</Link></th>
+                                                >
+                                                    {todoItem.todo_description}
+                                                </Link>
+                                            </th>
+                                            <th className="col-10 text-right">
+                                                <button onClick={e => this.removeTodo(e, todoItem._id)}>-</button>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th>Assignee: </th><td>{todoItem.todo_responsible}</td>
+                                        <tr className="d-flex">
+                                            <td scope="row" className="col-2">Assignee: </td><td className="text-left col-10">{todoItem.todo_responsible}</td>
                                         </tr>
-                                        <tr>
-                                            <th>Priority: </th><td>{todoItem.todo_priority}</td>
+                                        <tr className="d-flex">
+                                            <td scope="row" className="col-2">Priority: </td><td className="text-left col-10">{todoItem.todo_priority}</td>
                                         </tr>
-                                        <tr>
-                                            <th>Completed: </th><td>{String(todoItem.todo_completed)}</td>
+                                        <tr className="d-flex">
+                                            <td scope="row" className="col-2">Completed: </td><td className="text-left col-10">{String(todoItem.todo_completed)}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <br />
                             </React.Fragment>
                         }
-                        ) : "Nothing to display"
+                        ) : <div className="warning">"Nothing to display"</div>
                 }
             </div>
         );

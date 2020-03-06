@@ -1,6 +1,5 @@
 import React from 'react';
-import { Todo } from '../util/Todo';
-import { withRouter } from 'react-router-dom'
+import {withRouter} from 'react-router-dom';
 
 import Submit from './formInput/Submit.form.component';
 import TextInput from './formInput/TextInput.form.component';
@@ -13,10 +12,19 @@ export const FormFields = {
     completed : 'todo_completed'
 };
 
+const priorityOptions =
+[
+    { Id: "priorityLow", Value: "Low" },
+    { Id: "priorityMedium", Value: "Medium"},
+    { Id: "priorityHigh", Value: "High"}
+];
+
 class EditTodo extends React.Component {
     
     constructor(props) {
         super(props);
+console.log(`ID: ${priorityOptions[0].Id}`);
+
         this.state = {
             _id: '',
             [FormFields.description]: '',
@@ -30,13 +38,6 @@ class EditTodo extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
 
     }
-
-    priorityOptions =
-    [
-        { Id: "priorityLow", Value: "Low" },
-        { Id: "priorityMedium", Value: "Medium"},
-        { Id: "priorityHigh", Value: "High"}
-    ];
 
     componentDidMount(){
         console.log(this.props.location.state.todo)
@@ -78,24 +79,17 @@ class EditTodo extends React.Component {
 
         this.props.EditTodo(editTodo);
 
-        this.setState({
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
-        });
-
         this.props.history.push('/');
     }
 
     render() {
         return (
-            <form className="form-group" onSubmit={this.onSubmit}>
+            <form className="container form-group" onSubmit={this.onSubmit}>
                 <p>EditTodo for {this.props.match.params.id}</p>
                 <div>
                     <TextInput Label="Description: " Value={this.state.todo_description} OnChange={this.onFormModify} fieldName={FormFields["description"]}/>
                     <TextInput Label="Responsible: " Value={this.state.todo_responsible} OnChange={this.onFormModify} fieldName={FormFields["responsible"]}/>
-                    <RadioButtonMenu Options={this.priorityOptions} CurrentOption={this.state.todo_priority} OnChange={this.onFormModify} fieldName={FormFields["priority"]}/>
+                    <RadioButtonMenu Options={priorityOptions} CurrentOption={this.state.todo_priority} OnChange={this.onFormModify} fieldName={FormFields["priority"]}/>
                 </div>
                 <Submit Value="Save Todo" />
             </form>

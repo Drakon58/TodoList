@@ -4,49 +4,41 @@ import Submit from './formInput/Submit.form.component';
 import TextInput from './formInput/TextInput.form.component';
 import RadioButtonMenu from './formInput/RadioButtonMenu.form.component';
 
+const FormFields = {
+    description : 'todo_description',
+    responsible : 'todo_responsible',
+    priority : 'todo_priority',
+    completed : 'todo_completed'
+};
+
+const priorityOptions =
+[
+    { Id: "priorityLow", Value: "Low" },
+    { Id: "priorityMedium", Value: "Medium"},
+    { Id: "priorityHigh", Value: "High"}
+];
+
 export default class CreateTodo extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
+            lastCreated: '',
+            [FormFields.description]: '',
+            [FormFields.responsible]: '',
+            [FormFields.priority]: priorityOptions[0].Value,
+            [FormFields.completed]: false
         }
 
+        this.onFormModify = this.onFormModify.bind(this);
         this.onChangeCompleted = this.onChangeCompleted.bind(this);
-        this.onChangeTodoDescription = this.onChangeTodoDescription.bind(this);
-        this.onChangeTodoResponsible = this.onChangeTodoResponsible.bind(this);
-        this.onChangeTodoPriority = this.onChangeTodoPriority.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    priorityOptions =
-        [
-            { Id: "priorityLow", Value: "Low" },
-            { Id: "priorityMedium", Value: "Medium"},
-            { Id: "priorityHigh", Value: "High"}
-        ];
-
-    onChangeTodoDescription(e) {
-        var newDesc = e.target.value;
+    onFormModify(e, field) {
+        var newVal = e.target.value;
         this.setState({
-            todo_description: newDesc
-        });
-    }
-
-    onChangeTodoResponsible(e) {
-        var newResponsible = e.target.value;
-        this.setState({
-            todo_responsible: newResponsible
-        });
-    }
-
-    onChangeTodoPriority(e) {
-        var newPrioirity = e.target.value;
-        this.setState({
-            todo_priority: newPrioirity
+            [field]: newVal
         });
     }
 
@@ -66,30 +58,46 @@ export default class CreateTodo extends React.Component {
         `);
 
         const newTodo = {
-            todo_description: this.state.todo_description,
-            todo_responsible: this.state.todo_responsible,
-            todo_priority: this.state.todo_priority,
-            todo_completed: this.state.todo_completed
+            [FormFields.description]: this.state.todo_description,
+            [FormFields.responsible]: this.state.todo_responsible,
+            [FormFields.priority]: this.state.todo_priority,
+            [FormFields.completed]: this.state.todo_completed
         };
 
-        this.props.CreateTodo(newTodo);
+        let createStatus = this.props.CreateTodo(newTodo);
 
-        this.setState({
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
-        });
+        console.log(`State is ${createStatus}`)
+
+        if (createStatus) {
+            this.setState({
+                lastCreated: this.state.todo_description,
+                [FormFields.description]: '',
+                [FormFields.responsible]: '',
+                [FormFields.priority]: priorityOptions[0].Value,
+                [FormFields.completed]: false
+            });
+        } else {
+            this.setState({
+                lastCreated: '',
+                [FormFields.description]: '',
+                [FormFields.responsible]: '',
+                [FormFields.priority]: priorityOptions[0].Value,
+                [FormFields.completed]: false
+            });
+        }
     }
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
+            <form className="container form-group" onSubmit={this.onSubmit}>
                 <p>CreateTodo Display</p>
+                {
+                    this.state.lastCreated != '' ? <h2 className="alert-success">Created Todo: {this.state.lastCreated}</h2> : <br/>
+                }
                 <div>
-                    <TextInput Label="Description: " Value={this.state.todo_description} OnChange={this.onChangeTodoDescription} />
-                    <TextInput Label="Responsible: " Value={this.state.todo_responsible} OnChange={this.onChangeTodoResponsible} />
-                    <RadioButtonMenu Options={this.priorityOptions} CurrentOption={this.state.todo_priority} OnChange={this.onChangeTodoPriority}/>
+                    <TextInput Label="Description: " Value={this.state.todo_description} OnChange={this.onFormModify} fieldName={FormFields["description"]}/>
+                    <TextInput Label="Responsible: " Value={this.state.todo_responsible} OnChange={this.onFormModify} fieldName={FormFields["responsible"]}/>
+                    <RadioButtonMenu Options={priorityOptions} CurrentOption={this.state.todo_priority} OnChange={this.onFormModify} fieldName={FormFields["priority"]}/>
                 </div>
 
                 <Submit Value="Create Todo"/>
