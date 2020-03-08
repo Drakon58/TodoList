@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Todo } from '../util/Todo';
 
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faMinusSquare } from '@fortawesome/free-solid-svg-icons'
+
 export default class TodoList extends React.Component {
     constructor(props) {
         super(props);
@@ -22,7 +25,7 @@ export default class TodoList extends React.Component {
 
     removeTodo(e, id) {
         Todo.RemoveTodo(id);
-        let todoArray = this.state.todos.filter(x => x._id != id);
+        let todoArray = this.state.todos.filter(x => x._id !== id);
         this.setState({
             todos: todoArray
         });
@@ -51,19 +54,19 @@ export default class TodoList extends React.Component {
                                                 </Link>
                                             </th>
                                             <th className="col-10 text-right">
-                                                <button onClick={e => this.removeTodo(e, todoItem._id)}>-</button>
+                                            <button className="btn btn-primary btn-dark"><FontAwesomeIcon onClick={e => this.removeTodo(e, todoItem._id)} aria-hidden="true" icon={faMinusSquare}>Remove</FontAwesomeIcon></button>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr className="d-flex">
-                                            <td scope="row" className="col-2">Assignee: </td><td className="text-left col-10">{todoItem.todo_responsible}</td>
+                                            <td className="col-2">Assignee: </td><td className="text-left col-10">{todoItem.todo_responsible}</td>
                                         </tr>
                                         <tr className="d-flex">
-                                            <td scope="row" className="col-2">Priority: </td><td className="text-left col-10">{todoItem.todo_priority}</td>
+                                            <td className="col-2">Priority: </td><td className="text-left col-10">{todoItem.todo_priority}</td>
                                         </tr>
                                         <tr className="d-flex">
-                                            <td scope="row" className="col-2">Completed: </td><td className="text-left col-10">{String(todoItem.todo_completed)}</td>
+                                            <td className="col-2">Completed: </td><td className="text-left col-10">{String(todoItem.todo_completed)}</td>
                                         </tr>
                                     </tbody>
                                 </table>

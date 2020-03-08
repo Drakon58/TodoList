@@ -1,5 +1,4 @@
 import React from 'react';
-import {FormFields} from '../EditTodo.component'
 
 export default (props) => {
     return (

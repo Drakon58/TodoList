@@ -50,7 +50,7 @@ export const Todo = {
     },
 
     RemoveTodo: (id) => {
-        axios.post(`${TodoBaseURL}/remove/${id}`)
+        axios.post(`${TodoBaseURL}${TodoRemove}/${id}`)
             .catch((error) => {
                 console.error(error);
             }).then(resJson => {

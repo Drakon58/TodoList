@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, matchPath } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 import TodoList from './component/TodoList.component';
 import EditTodo from './component/EditTodo.component';
@@ -18,7 +18,7 @@ export class App extends React.Component {
       <Router>
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand" href="https://codingthesmartway.com" target="_blank">
+            <a className="navbar-brand" href="https://codingthesmartway.com" target="_blank" rel="noopener noreferrer">
               <img src={logo} width="30" height="30" alt="CodingTheSmartWay.com" />
             </a>
             <Link to="/" className="navbar-brand">MERN-Stack Todo App</Link>

@@ -92,7 +92,7 @@ export default class CreateTodo extends React.Component {
             <form className="container form-group" onSubmit={this.onSubmit}>
                 <p>CreateTodo Display</p>
                 {
-                    this.state.lastCreated != '' ? <h2 className="alert-success">Created Todo: {this.state.lastCreated}</h2> : <br/>
+                    this.state.lastCreated !== '' ? <h2 className="alert-success">Created Todo: {this.state.lastCreated}</h2> : <br/>
                 }
                 <div>
                     <TextInput Label="Description: " Value={this.state.todo_description} OnChange={this.onFormModify} fieldName={FormFields["description"]}/>
