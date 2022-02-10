@@ -42,7 +42,7 @@
   "devDependencies": {
     "fibers": "^4.0.2",
     "jquery": "^1.12.4",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "sass": "^1.26.2",
     "typescript": "^3.8.3"
   }
